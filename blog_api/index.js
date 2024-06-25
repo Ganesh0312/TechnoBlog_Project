@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import cookieParser from "cookie-parser";
-// import path from "path";
+import path from "path";
 
 import userRouters from "./routers/userRoute.js";
 import authRouter from "./routers/authRouter.js";
@@ -26,17 +26,18 @@ app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
 
+const __dirname = path.resolve();
+
 app.use("/api/user", userRouters);
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoutes);
 
-// const __dirname = path.resolve();
-// app.use(express.static(path.join(__dirname, "/blog_client/dist")));
+app.use(express.static(path.join(__dirname, "/blog_client/dist")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "blog_client", "dist", "index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "blog_client", "dist", "index.html"));
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
